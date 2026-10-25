@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Sierra",
+    "scheme": "sierra",
+    "slug": "Sierra",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/sierra.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/sierra.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sierra.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/sierra.png",
+        "backgroundColor": "#ffffff"
+      },
+      "useNextNotificationsApi": true,
+      "package": "com.sierra.app",
+      "permissions": [
+        "READ_CONTACTS",
+        "WRITE_CONTACTS",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/sierra.png"
+    },
+    "plugins": [
+      "expo-localization",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification_icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default",
+          "enableBackgroundRemoteNotifications": true,
+          "sound": []
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "99f6fedf-f095-441b-b0ea-c24f537eaf7e"
+      }
+    }
+  }
+}
