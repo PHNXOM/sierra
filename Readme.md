@@ -1,6 +1,6 @@
 # **Sierra** - A Real-Time Multimedia Chat Application
 
-Sierra is a modern, feature-rich chat application built with React Native. It provides a seamless messaging experience with support for text, images, videos, and audio messages. The app also includes a dark mode, real-time typing indicators, and a built-in AI chatbot for enhanced user interaction
+Sierra is a modern, feature-rich chat application built with React Native. It provides a seamless messaging experience with support for text, images, videos, and audio messages. The app also includes a dark mode, real-time typing indicators.
 
 ## Features
 
@@ -28,7 +28,7 @@ Sierra is a modern, feature-rich chat application built with React Native. It pr
 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/RaidenOM/sierra.git
+git clone https://github.com/PHNXOM/sierra.git
 cd sierra
 ```
 
@@ -49,42 +49,22 @@ npm start
 ### Frontend
 
 - React Native with Expo
-- StyleSheet and LinearGradient
+- React Native Paper for Material UI
 - React Navigation
 
 ### Backend
 
-- Node.js with Express.js
-- Socket.io
-- Cloudinary with Multer
+- Spring Boot
+- WebSocket (STOMP protocol)
+- Cloudinary
 - FCM (Firebase Cloud Messaging) for push notifications
 
 ### Authentication
 
+- Spring Security
 - JWT
 - Bcrypt
 
 ### Database
 
-- MongoDB
-
-## Project Structure
-
-```
-App.js                  Providers + navigation container
-constants/              Colors/themes, API url, socket events, country codes
-context/                Global state: Theme, Auth, Socket, Sound, Chat
-services/               Everything that talks to the outside world
-                        (backend API, socket, contacts, notifications, pickers)
-utils/                  Pure helper functions (dates, phone numbers, forms, chat list)
-navigation/             Route names, stacks, tabs, header options
-components/
-  ui/                   Reusable building blocks (Button, Input, Avatar, Card, ...)
-  auth/ chat/ media/    Components grouped by feature
-  contacts/ profile/
-screens/                One folder per feature; each screen only wires things together
-  auth/ chats/ contacts/ profile/ settings/ media/
-```
-
-How data flows: **screen -> service -> backend**. Screens never build URLs or
-headers themselves, and shared state lives in `context/`.
+- MySQL
