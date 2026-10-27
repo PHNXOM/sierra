@@ -10,9 +10,7 @@ import {
   validateUsername,
 } from "../../utils/validation";
 import AuthLayout from "../../components/auth/AuthLayout";
-import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
-import { useTheme } from "react-native-paper";
+import { Button, TextInput, useTheme } from "react-native-paper";
 
 export default function RegisterScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -54,7 +52,7 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <AuthLayout title="Create an Account" subtitle="Sign up to get started">
-      <Input
+      <TextInput
         style={styles.input}
         placeholder="Username"
         value={username}
@@ -80,7 +78,7 @@ export default function RegisterScreen({ navigation }) {
           value={countryCode}
           onChange={(country) => setCountryCode(country.code)}
         />
-        <Input
+        <TextInput
           style={styles.phoneInput}
           placeholder="Phone Number"
           value={phone}
@@ -89,7 +87,7 @@ export default function RegisterScreen({ navigation }) {
         />
       </View>
 
-      <Input
+      <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
@@ -97,7 +95,7 @@ export default function RegisterScreen({ navigation }) {
         autoCapitalize="none"
         secureTextEntry
       />
-      <Input
+      <TextInput
         style={styles.input}
         placeholder="Confirm password"
         value={confirmPassword}
@@ -107,16 +105,19 @@ export default function RegisterScreen({ navigation }) {
       />
 
       <Button
-        title="Register"
         onPress={handleRegister}
-        loading={loading}
         style={styles.registerButton}
-      />
+        mode="contained"
+      >
+        Register
+      </Button>
       <Button
         title="Already have an account? Login"
-        variant="secondary"
+        mode="text"
         onPress={() => navigation.goBack()}
-      />
+      >
+        Already have an account? Login
+      </Button>
     </AuthLayout>
   );
 }
@@ -136,5 +137,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   phoneInput: { flex: 1 },
-  registerButton: { marginBottom: 15 },
+  registerButton: { marginBottom: 15, minWidth: "50%" },
 });

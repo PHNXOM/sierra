@@ -3,7 +3,7 @@ import "text-encoding-polyfill";
 import { Client } from "@stomp/stompjs";
 
 export const client = new Client({
-  brokerURL: "ws://10.247.147.145:8080/ws",
+  brokerURL: "ws://10.49.163.145:8080/ws",
   reconnectDelay: 5000,
   debug: function (str) {
     console.log("STOMP Debug: ", str);

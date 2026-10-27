@@ -103,7 +103,7 @@ export default function EditProfileScreen({ navigation }) {
 
         <Button
           mode="contained"
-          style={{ marginBottom: 15, width: "50%" }}
+          style={{ marginBottom: 15, minWidth: "50%" }}
           onPress={handleSave}
         >
           {loading ? (

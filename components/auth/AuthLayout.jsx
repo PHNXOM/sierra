@@ -1,7 +1,7 @@
-import { Image, StyleSheet, Text } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { COLORS } from "../../constants/colors";
 import ScreenBackground from "../ui/ScreenBackground";
-import { useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 
 // Shared layout of the Login and Register screens.
 export default function AuthLayout({
@@ -21,10 +21,17 @@ export default function AuthLayout({
           style={styles.logo}
         />
       )}
-      <Text style={[styles.title, { color: theme.colors.onBackground }]}>
+      <Text variant="displaySmall" style={{ color: theme.colors.onBackground }}>
         {title}
       </Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <Text
+        style={{
+          color: theme.colors.outline,
+          marginBottom: 25,
+        }}
+      >
+        {subtitle}
+      </Text>
       {children}
     </ScreenBackground>
   );
@@ -37,16 +44,4 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: { height: 120, width: 120, marginBottom: 30 },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 18,
-    color: COLORS.muted,
-    marginBottom: 25,
-    textAlign: "center",
-  },
 });

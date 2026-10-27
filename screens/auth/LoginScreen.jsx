@@ -1,17 +1,18 @@
 import { useContext, useState } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
-import { ROUTES } from "../../navigation/routes";
 import { validatePassword, validateUsername } from "../../utils/validation";
 import AuthLayout from "../../components/auth/AuthLayout";
-import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
+import { Button, TextInput, useTheme } from "react-native-paper";
+import { ROUTES } from "../../navigation/routes";
 
 export default function LoginScreen({ navigation }) {
   const { login } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const theme = useTheme();
 
   async function handleLogin() {
     const error = validateUsername(username) ?? validatePassword(password);
@@ -33,14 +34,14 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <AuthLayout title="Welcome Back" subtitle="Log in to your account" showLogo>
-      <Input
+      <TextInput
         style={styles.input}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
       />
-      <Input
+      <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
@@ -48,17 +49,30 @@ export default function LoginScreen({ navigation }) {
         autoCapitalize="none"
         secureTextEntry
       />
-      <Button title="Login" onPress={handleLogin} loading={loading} style={styles.loginButton} />
       <Button
-        title="New User? Register"
-        variant="secondary"
-        onPress={() => navigation.navigate(ROUTES.REGISTER)}
-      />
+        mode="contained"
+        style={{ marginBottom: 15, minWidth: "50%" }}
+        onPress={handleLogin}
+      >
+        {loading ? (
+          <ActivityIndicator color={theme.colors.onPrimary} />
+        ) : (
+          "Login"
+        )}
+      </Button>
+      <Button
+        mode="contained-tonal"
+        style={{ minWidth: "50%" }}
+        onPress={() => {
+          navigation.navigate(ROUTES.REGISTER);
+        }}
+      >
+        Register
+      </Button>
     </AuthLayout>
   );
 }
 
 const styles = StyleSheet.create({
   input: { width: "100%", marginBottom: 15 },
-  loginButton: { marginBottom: 15 },
 });
