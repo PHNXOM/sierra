@@ -1,4 +1,4 @@
-export const API_URL = "http://10.49.163.145:8080";
+export const API_URL = "http://10.0.2.2:8080";
 
 export const STORAGE_KEYS = {
   TOKEN: "token",

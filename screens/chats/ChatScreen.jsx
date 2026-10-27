@@ -1,4 +1,10 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Alert, Keyboard, TouchableOpacity } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -41,7 +47,9 @@ export default function ChatScreen({ route, navigation }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const isFocused = useIsFocused();
-  const { on } = useContext(SocketContext);
+  const { on, client } = useContext(SocketContext);
+
+  const isTyping = useRef(false);
 
   // ---------- Load the conversation ----------
   useEffect(() => {
@@ -61,7 +69,7 @@ export default function ChatScreen({ route, navigation }) {
 
   // ---------- Realtime updates ----------
   useEffect(() => {
-    const addMessage = (msg) => setMessages((prev) => [...prev, msg]);
+    const addMessage = (msg) => setMessages((prev) => [msg, ...prev]);
 
     const offNew = on("NEW_MESSAGE", (data) => {
       if (data.sender.id === otherUser.id) addMessage(data);
@@ -139,6 +147,29 @@ export default function ChatScreen({ route, navigation }) {
   }, [navigation, otherUser]);
 
   // ---------- Typing indicator ----------
+  useEffect(() => {
+    if (!isTyping.current && text) {
+      isTyping.current = true;
+      client.publish({
+        destination: "/app/typing",
+        body: JSON.stringify({ senderId: user.id, receiverId: otherUser.id }),
+        headers: { "content-type": "application/json" },
+      });
+    }
+
+    const activeTimer = setTimeout(() => {
+      if (isTyping.current) {
+        client.publish({
+          destination: "/app/stop-typing",
+          body: JSON.stringify({ senderId: user.id, receiverId: otherUser.id }),
+          headers: { "content-type": "application/json" },
+        });
+        isTyping.current = false;
+      }
+    }, 2000);
+
+    return () => clearTimeout(activeTimer);
+  }, [text]);
 
   // ---------- Attachments ----------
   async function handlePickGallery() {

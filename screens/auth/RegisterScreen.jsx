@@ -96,7 +96,7 @@ export default function RegisterScreen({ navigation }) {
         secureTextEntry
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { marginBottom: 20 }]}
         placeholder="Confirm password"
         value={confirmPassword}
         onChangeText={setConfirmPassword}

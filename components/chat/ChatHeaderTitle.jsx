@@ -2,12 +2,17 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../constants/colors";
 import { FONT_FAMILY } from "../../constants/config";
 import { Avatar, Text, useTheme } from "react-native-paper";
+import { useContext } from "react";
+import { ChatContext } from "../../context/ChatContext";
 
 const DEFAULT_AVATAR = require("../../assets/image/user.png");
 
 // Avatar + username (+ "typing...") shown in the chat screen header.
-export default function ChatHeaderTitle({ otherUser, isTyping, onPress }) {
+export default function ChatHeaderTitle({ otherUser, onPress }) {
+  const { typingUsers } = useContext(ChatContext);
   const theme = useTheme();
+
+  const isTyping = typingUsers[otherUser.id];
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>

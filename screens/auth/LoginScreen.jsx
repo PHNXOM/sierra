@@ -42,7 +42,7 @@ export default function LoginScreen({ navigation }) {
         autoCapitalize="none"
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { marginBottom: 20 }]}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
@@ -61,7 +61,7 @@ export default function LoginScreen({ navigation }) {
         )}
       </Button>
       <Button
-        mode="contained-tonal"
+        mode="text"
         style={{ minWidth: "50%" }}
         onPress={() => {
           navigation.navigate(ROUTES.REGISTER);

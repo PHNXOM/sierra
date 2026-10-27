@@ -6,7 +6,7 @@ import {
   useRef,
 } from "react";
 import { AppState } from "react-native";
-import { client, socket } from "../config/socket";
+import { client } from "../config/socket";
 import { AuthContext } from "./AuthContext";
 
 export const SocketContext = createContext();
@@ -58,7 +58,7 @@ export function SocketProvider({ children }) {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ client, socket, on }}>
+    <SocketContext.Provider value={{ client, on }}>
       {children}
     </SocketContext.Provider>
   );

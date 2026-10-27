@@ -15,14 +15,8 @@ function DateSeparator({ date }) {
 export default function MessageList({ messages, user, otherUser }) {
   const listRef = useRef(null);
 
-  // Oldest first. Copy the array so the original state isn't mutated.
-  const sortedMessages = useMemo(
-    () => [...messages].sort((a, b) => new Date(a.sentAt) - new Date(b.sentAt)),
-    [messages],
-  );
-
   function renderMessage({ item, index }) {
-    const previous = sortedMessages[index - 1];
+    const previous = messages[index + 1];
     const startsNewDay =
       !previous || !isSameDay(new Date(previous.sentAt), new Date(item.sentAt));
     const isOwnMessage = item.sender.id === user.id;
@@ -30,12 +24,12 @@ export default function MessageList({ messages, user, otherUser }) {
 
     return (
       <>
-        {startsNewDay && <DateSeparator date={item.sentAt} />}
         <MessageBubble
           message={item}
           isOwnMessage={isOwnMessage}
           avatarURI={sender?.profilePhoto}
         />
+        {startsNewDay && <DateSeparator date={item.sentAt} />}
       </>
     );
   }
@@ -43,13 +37,11 @@ export default function MessageList({ messages, user, otherUser }) {
   return (
     <FlatList
       ref={listRef}
-      data={sortedMessages}
+      data={messages}
       keyExtractor={(message) => message.id.toString()}
       renderItem={renderMessage}
       contentContainerStyle={styles.content}
-      onContentSizeChange={() =>
-        listRef.current?.scrollToEnd({ animated: true })
-      }
+      inverted={true}
     />
   );
 }

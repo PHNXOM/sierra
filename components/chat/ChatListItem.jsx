@@ -2,6 +2,8 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { COLORS } from "../../constants/colors";
 import { Avatar, Text, useTheme } from "react-native-paper";
+import { useContext } from "react";
+import { ChatContext } from "../../context/ChatContext";
 
 const DEFAULT_AVATAR = require("../../assets/image/user.png");
 
@@ -11,15 +13,16 @@ const MEDIA_ICONS = {
   audio: "musical-notes",
 };
 
-// One row of the chat list: the other person and the latest message.
 export default function ChatListItem({
   otherUser,
   latestMessage,
   isSentByMe,
-  isTyping,
   onPress,
 }) {
   const theme = useTheme();
+  const { typingUsers } = useContext(ChatContext);
+
+  const isTyping = typingUsers[otherUser.id];
 
   function renderPreview() {
     if (isTyping) return <Text style={styles.typing}>typing...</Text>;

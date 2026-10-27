@@ -12,6 +12,7 @@ export function ChatProvider({ children }) {
   const { on } = useContext(SocketContext);
   const { playMessageReceivedSound } = useContext(SoundContext);
   const [chats, setChats] = useState([]);
+  const [typingUsers, setTypingUsers] = useState({});
 
   useEffect(() => {
     const off_new_message = on("NEW_MESSAGE", (data) => {
@@ -27,10 +28,20 @@ export function ChatProvider({ children }) {
       setChats((prev) => removeConversation(prev, receiverId));
     });
 
+    const off_typing = on("TYPING", ({ otherUserId }) => {
+      setTypingUsers((prev) => ({ ...prev, [otherUserId]: true }));
+    });
+
+    const off_stop_typing = on("STOP_TYPING", ({ otherUserId }) => {
+      setTypingUsers((prev) => ({ ...prev, [otherUserId]: false }));
+    });
+
     return () => {
       off_new_message();
       off_message_sent();
       off_delete_chat();
+      off_typing();
+      off_stop_typing();
     };
   }, [on]);
 
@@ -51,7 +62,7 @@ export function ChatProvider({ children }) {
     if (!user.id) setChats([]);
   }, [user.id]);
 
-  const value = { chats, setChats, markMessagesRead };
+  const value = { chats, setChats, markMessagesRead, typingUsers };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 }
