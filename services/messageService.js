@@ -6,8 +6,11 @@ export async function getLatestMessages() {
   return data;
 }
 
-export async function getMessages(otherUserId) {
-  const { data } = await api.get(`/api/messages/${otherUserId}`);
+export async function getMessages(otherUserId, beforeId = null) {
+  let url = `/api/messages/${otherUserId}`;
+  if (beforeId != null) url += `?beforeId=${beforeId}`;
+
+  const { data } = await api.get(url);
   return data;
 }
 

@@ -1,6 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLORS } from "../../constants/colors";
 import { Avatar, Text, useTheme } from "react-native-paper";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatContext";
@@ -50,7 +49,7 @@ export default function ChatListItem({
           <Ionicons
             name={MEDIA_ICONS[latestMessage.mediaType]}
             size={16}
-            color={COLORS.muted}
+            color={theme.colors.outline}
           />
         )}
       </>
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
   name: { fontSize: 18, fontWeight: "bold" },
   previewRow: { flexDirection: "row", alignItems: "center", marginTop: 6 },
   arrow: { marginRight: 4 },
-  typing: { color: COLORS.typing },
+  typing: { color: "green" },
   unreadBadge: {
     position: "absolute",
     top: 2,

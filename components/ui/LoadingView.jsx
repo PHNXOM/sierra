@@ -1,5 +1,4 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { COLORS } from "../../constants/colors";
 import { Text, useTheme } from "react-native-paper";
 
 export default function LoadingView({ message }) {

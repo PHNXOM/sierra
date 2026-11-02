@@ -1,15 +1,20 @@
 import { Image, StatusBar, StyleSheet, Text, View } from "react-native";
-import { COLORS } from "../../constants/colors";
+import { useTheme } from "react-native-paper";
 
 export default function ImageViewerScreen({ route }) {
   const { mediaURL } = route.params;
+  const theme = useTheme();
 
   return (
     <View style={styles.container}>
       {mediaURL ? (
-        <Image source={{ uri: mediaURL }} style={styles.image} resizeMode="contain" />
+        <Image
+          source={{ uri: mediaURL }}
+          style={styles.image}
+          resizeMode="contain"
+        />
       ) : (
-        <Text style={styles.empty}>No Profile Photo</Text>
+        <Text style={{ color: theme.colors.outline }}>No Profile Photo</Text>
       )}
       <StatusBar backgroundColor="black" barStyle="light-content" />
     </View>
@@ -24,5 +29,4 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   image: { flex: 1, width: "100%" },
-  empty: { color: COLORS.muted },
 });

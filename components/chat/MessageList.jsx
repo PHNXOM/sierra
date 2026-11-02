@@ -1,8 +1,15 @@
 import { useMemo, useRef } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { isSameDay } from "date-fns";
 import { formatDate } from "../../utils/date";
 import MessageBubble from "./MessageBubble";
+import { useTheme } from "react-native-paper";
 
 function DateSeparator({ date }) {
   return (
@@ -12,8 +19,15 @@ function DateSeparator({ date }) {
   );
 }
 
-export default function MessageList({ messages, user, otherUser }) {
+export default function MessageList({
+  messages,
+  user,
+  otherUser,
+  handleEndReached,
+  loadingMore,
+}) {
   const listRef = useRef(null);
+  const theme = useTheme();
 
   function renderMessage({ item, index }) {
     const previous = messages[index + 1];
@@ -42,6 +56,16 @@ export default function MessageList({ messages, user, otherUser }) {
       renderItem={renderMessage}
       contentContainerStyle={styles.content}
       inverted={true}
+      onEndReached={handleEndReached}
+      ListFooterComponent={
+        loadingMore && (
+          <ActivityIndicator
+            size="small"
+            color={theme.colors.onBackground}
+            style={{ marginVertical: 10 }}
+          />
+        )
+      }
     />
   );
 }

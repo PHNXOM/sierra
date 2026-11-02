@@ -8,7 +8,6 @@ import {
   View,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLORS } from "../../constants/colors";
 import { AuthContext } from "../../context/AuthContext";
 import { ROUTES } from "../../navigation/routes";
 import { fetchRegisteredContacts } from "../../services/contactService";
@@ -16,11 +15,13 @@ import ContactListItem from "../../components/contacts/ContactListItem";
 import EmptyState from "../../components/ui/EmptyState";
 import ScreenBackground from "../../components/ui/ScreenBackground";
 import ScreenHeader from "../../components/ui/ScreenHeader";
+import { useTheme } from "react-native-paper";
 
 export default function ContactsScreen({ navigation }) {
   const { user } = useContext(AuthContext);
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
 
   async function loadContacts() {
     setLoading(true);
@@ -49,10 +50,10 @@ export default function ContactsScreen({ navigation }) {
   const headerButtons = (
     <View style={styles.headerButtons}>
       {loading ? (
-        <ActivityIndicator color={COLORS.success} size={24} />
+        <ActivityIndicator color={theme.colors.onBackground} size={24} />
       ) : (
         <TouchableOpacity onPress={loadContacts}>
-          <Ionicons name="refresh" size={24} color={COLORS.muted} />
+          <Ionicons name="refresh" size={24} color={theme.colors.outline} />
         </TouchableOpacity>
       )}
     </View>

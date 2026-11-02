@@ -46,6 +46,8 @@ export default function ChatScreen({ route, navigation }) {
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
+  const [loadingMore, setLoadingMore] = useState(false);
+
   const isFocused = useIsFocused();
   const { on, client } = useContext(SocketContext);
 
@@ -66,6 +68,26 @@ export default function ChatScreen({ route, navigation }) {
 
     loadConversation();
   }, [otherUser]);
+
+  const handleEndReached = async () => {
+    if (loadingMore || messages.length === 0) return;
+
+    setLoadingMore(true);
+    try {
+      const oldestMessage = messages[messages.length - 1];
+      const beforeId = oldestMessage.id;
+
+      const messagesData = await getMessages(otherUser.id, beforeId);
+
+      if (messagesData.length !== 0) {
+        setMessages((prev) => [...prev, ...messagesData]);
+      }
+    } catch (error) {
+      console.log("Error loading older messages", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   // ---------- Realtime updates ----------
   useEffect(() => {
@@ -226,7 +248,13 @@ export default function ChatScreen({ route, navigation }) {
       {loading ? (
         <LoadingView message="Loading Chats..." />
       ) : (
-        <MessageList messages={messages} user={user} otherUser={otherUser} />
+        <MessageList
+          messages={messages}
+          user={user}
+          otherUser={otherUser}
+          handleEndReached={handleEndReached}
+          loadingMore={loadingMore}
+        />
       )}
 
       <ChatFooter>

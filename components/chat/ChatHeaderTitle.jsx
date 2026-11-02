@@ -1,5 +1,4 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../constants/colors";
 import { FONT_FAMILY } from "../../constants/config";
 import { Avatar, Text, useTheme } from "react-native-paper";
 import { useContext } from "react";
@@ -52,5 +51,5 @@ const styles = StyleSheet.create({
   },
   textContainer: { flexDirection: "row", alignItems: "center", marginLeft: 10 },
   username: { fontFamily: FONT_FAMILY },
-  typing: { color: COLORS.typing, marginLeft: 10 },
+  typing: { color: "green", marginLeft: 10 },
 });

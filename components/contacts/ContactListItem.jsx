@@ -1,5 +1,4 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../constants/colors";
 import { Avatar, Text, useTheme } from "react-native-paper";
 
 const DEFAULT_AVATAR = require("../../assets/image/user.png");
@@ -42,5 +41,4 @@ const styles = StyleSheet.create({
   avatar: { marginRight: 15 },
   textContainer: { flex: 1, justifyContent: "center" },
   name: { fontSize: 18, fontWeight: "bold" },
-  bio: { fontSize: 14, color: COLORS.muted, marginTop: 3 },
 });

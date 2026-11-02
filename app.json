@@ -43,7 +43,8 @@
           "enableBackgroundRemoteNotifications": true,
           "sound": []
         }
-      ]
+      ],
+      "expo-audio"
     ],
     "extra": {
       "eas": {

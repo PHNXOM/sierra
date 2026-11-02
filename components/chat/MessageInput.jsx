@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -6,7 +5,6 @@ import {
   View,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLORS } from "../../constants/colors";
 import { TextInput, useTheme } from "react-native-paper";
 
 // Emoji button, text field, attachment button and send button.

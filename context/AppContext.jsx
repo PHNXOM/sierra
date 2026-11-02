@@ -3,6 +3,9 @@ import AlertDialog from "../components/ui/AlertDialog";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { STORAGE_KEYS } from "../constants/config";
+// import { useAudioPlayer } from "expo-audio";
+const message_sent = require("../assets/audio/message_sent.mp3");
+const message_received = require("../assets/audio/message_received.mp3");
 
 export const AppContext = createContext();
 
@@ -112,6 +115,17 @@ export default function AppProvider({ children }) {
     content: "",
     buttons: [],
   });
+  // const messageSent = useAudioPlayer(message_sent);
+  // const messageReceived = useAudioPlayer(message_received);
+
+  // MESSAGE SOUNDS
+  // const playMessageSentSound = () => {
+  //   messageSent.play();
+  // };
+
+  // const playMessageReceivedSound = () => {
+  //   messageReceived.play();
+  // };
 
   // fetch user settings
   useEffect(() => {
@@ -158,7 +172,15 @@ export default function AppProvider({ children }) {
   const currentTheme = settings.theme === "light" ? LightTheme : DarkTheme;
 
   return (
-    <AppContext.Provider value={{ showAlert, dismissAlert, toggleTheme }}>
+    <AppContext.Provider
+      value={{
+        showAlert,
+        dismissAlert,
+        toggleTheme,
+        // playMessageSentSound,
+        // playMessageReceivedSound,
+      }}
+    >
       <PaperProvider theme={currentTheme}>
         {children}
         <AlertDialog

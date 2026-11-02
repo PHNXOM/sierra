@@ -1,6 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { COLORS } from "../../constants/colors";
 import VideoThumbnail from "../media/VideoThumbnail";
 
 function RemoveButton({ onPress }) {
@@ -12,7 +11,11 @@ function RemoveButton({ onPress }) {
 }
 
 // Preview of the attachment the user is about to send.
-export default function AttachmentPreview({ attachment, onRemove, onPlayVideo }) {
+export default function AttachmentPreview({
+  attachment,
+  onRemove,
+  onPlayVideo,
+}) {
   if (!attachment) return null;
   const { type, uri, name } = attachment;
 
@@ -76,9 +79,9 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 8,
-    backgroundColor: COLORS.dangerSoft,
+    backgroundColor: "#ff5252",
     justifyContent: "center",
     alignItems: "center",
   },
-  removeText: { color: COLORS.white },
+  removeText: { color: "white" },
 });

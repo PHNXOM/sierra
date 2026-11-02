@@ -1,5 +1,4 @@
 import { Image, StyleSheet } from "react-native";
-import { COLORS } from "../../constants/colors";
 import ScreenBackground from "../ui/ScreenBackground";
 import { Text, useTheme } from "react-native-paper";
 
