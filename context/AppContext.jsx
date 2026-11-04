@@ -140,15 +140,15 @@ export default function AppProvider({ children }) {
   }, []);
 
   const play = async (name) => {
+    console.log("CURRENT SETTING: ", settings);
+    if (settings.audio === "disabled") return;
+
     try {
       await sounds.current[name]?.replayAsync();
     } catch (error) {
       console.log(error);
     }
   };
-
-  const playMessageSentSound = () => play("sent");
-  const playMessageReceivedSound = () => play("received");
 
   // ******************** FETCH USER SETTINGS ********************
   useEffect(() => {
@@ -180,6 +180,19 @@ export default function AppProvider({ children }) {
     );
   };
 
+  // ******************** AUDIO TOGGLER ********************
+  const toggleAudio = async () => {
+    const new_audio = settings.audio === "enabled" ? "disabled" : "enabled";
+
+    const new_settings = { ...settings, audio: new_audio };
+    setSettings(new_settings);
+
+    await AsyncStorage.setItem(
+      STORAGE_KEYS.SETTINGS,
+      JSON.stringify(new_settings),
+    );
+  };
+
   // ******************** ALERT DIALOG ********************
   const showAlert = (title, content, buttons = []) => {
     setAlert({
@@ -195,15 +208,17 @@ export default function AppProvider({ children }) {
   };
 
   const currentTheme = settings.theme === "light" ? LightTheme : DarkTheme;
+  console.log(settings);
 
   return (
     <AppContext.Provider
       value={{
+        settings,
         showAlert,
         dismissAlert,
         toggleTheme,
-        playMessageSentSound,
-        playMessageReceivedSound,
+        play,
+        toggleAudio,
       }}
     >
       <PaperProvider theme={currentTheme}>

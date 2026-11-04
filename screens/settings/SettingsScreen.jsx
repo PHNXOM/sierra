@@ -17,7 +17,8 @@ import ScreenHeader from "../../components/ui/ScreenHeader";
 import { AppContext } from "../../context/AppContext";
 
 export default function SettingsScreen({ navigation }) {
-  const { showAlert, dismissAlert, toggleTheme } = useContext(AppContext);
+  const { showAlert, dismissAlert, toggleTheme, settings, toggleAudio } =
+    useContext(AppContext);
   const { logout, deleteProfile } = useContext(AuthContext);
   const [showAboutDialog, setShowAboutDialog] = useState(false);
 
@@ -113,6 +114,17 @@ export default function SettingsScreen({ navigation }) {
             title="Dark Mode"
             description="Toggle dark mode"
             right={() => <Switch value={isDark} onValueChange={toggleTheme} />}
+          />
+
+          <List.Item
+            title="Audio"
+            description="Enable or Disable audio"
+            right={() => (
+              <Switch
+                value={settings.audio === "enabled"}
+                onValueChange={toggleAudio}
+              />
+            )}
           />
 
           <List.Item

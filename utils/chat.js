@@ -4,9 +4,6 @@
 export const getOtherUser = (message, currentUserId) =>
   message.sender.id === currentUserId ? message.receiver : message.sender;
 
-export const involvesUser = (message, userId) =>
-  message.sender.id === userId || message.receiver.id === userId;
-
 // Puts `message` at the top, replacing the previous latest message of that conversation
 export function moveConversationToTop(chats, message, currentUserId) {
   const otherUserId = getOtherUser(message, currentUserId).id;
@@ -17,4 +14,7 @@ export function moveConversationToTop(chats, message, currentUserId) {
 }
 
 export const removeConversation = (chats, otherUserId) =>
-  chats.filter((chat) => !involvesUser(chat, otherUserId));
+  chats.filter(
+    (chat) =>
+      !(chat.sender.id === otherUserId || chat.receiver.id === otherUserId),
+  );

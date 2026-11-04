@@ -34,8 +34,8 @@ import { AppContext } from "../../context/AppContext";
 export default function ChatScreen({ route, navigation }) {
   const { otherUser } = route.params;
   const { user } = useContext(AuthContext);
-  const { playMessageSentSound } = useContext(AppContext);
-  const { markMessagesRead, removeChat } = useContext(ChatContext);
+  const { play, showAlert, dismissAlert } = useContext(AppContext);
+  const { markMessagesRead, deleteChat } = useContext(ChatContext);
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,22 +122,22 @@ export default function ChatScreen({ route, navigation }) {
 
   // ---------- Header: avatar, name, delete button ----------
   function confirmDeleteChat() {
-    Alert.alert(
+    showAlert(
       "Delete Chats",
       "Are you sure you want to delete all chats with this user?",
       [
-        { text: "Cancel", style: "cancel" },
+        { title: "Cancel", onPress: dismissAlert },
         {
-          text: "Delete",
-          style: "destructive",
+          title: "Delete",
           onPress: async () => {
             try {
               await deleteConversation(otherUser.id);
-              removeChat(otherUser.id);
-              Alert.alert("Chats Deleted", "All Chats have been erased.");
+              deleteChat(otherUser.id);
+              showAlert("Chats Deleted", "All Chats have been erased.");
               navigation.goBack();
             } catch (error) {
-              Alert.alert("Error", "Unable to delete chats.");
+              console.log(error);
+              showAlert("Error", "Unable to delete chats.");
             }
           },
         },
@@ -234,7 +234,7 @@ export default function ChatScreen({ route, navigation }) {
       // The sent message arrives through the socket ("message-sent")
       setText("");
       setAttachment(null);
-      await playMessageSentSound();
+      play("sent");
     } catch (error) {
       console.error("Error sending message", error);
     } finally {

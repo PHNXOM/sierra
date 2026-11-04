@@ -1,6 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { AppState, FlatList, StyleSheet } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
+import {
+  ActivityIndicator,
+  AppState,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useIsFocused, useTheme } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
 import { ROUTES } from "../../navigation/routes";
@@ -11,20 +18,26 @@ import EmptyState from "../../components/ui/EmptyState";
 import LoadingView from "../../components/ui/LoadingView";
 import ScreenBackground from "../../components/ui/ScreenBackground";
 import ScreenHeader from "../../components/ui/ScreenHeader";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function ChatListScreen({ navigation }) {
   const { user } = useContext(AuthContext);
   const { chats, setChats } = useContext(ChatContext);
   const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
+  const theme = useTheme();
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const loadChats = async () => {
+    setRefreshing(true);
     try {
       setChats(await getLatestMessages());
     } catch (error) {
       console.error("Error fetching chats", error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -68,9 +81,25 @@ export default function ChatListScreen({ navigation }) {
     );
   }
 
+  const headerButtons = !loading && (
+    <View>
+      {refreshing ? (
+        <ActivityIndicator color={theme.colors.onBackground} size={24} />
+      ) : (
+        <TouchableOpacity onPress={loadChats}>
+          <Ionicons name="refresh" size={24} color={theme.colors.outline} />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+
   return (
     <ScreenBackground>
-      <ScreenHeader title="Chats" style={{ marginBottom: 15 }} />
+      <ScreenHeader
+        title="Chats"
+        style={{ marginBottom: 15 }}
+        right={headerButtons}
+      />
       {renderContent()}
     </ScreenBackground>
   );
