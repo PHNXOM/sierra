@@ -54,7 +54,8 @@
     "react-native-svg": "15.2.0",
     "socket.io-client": "^4.8.1",
     "text-encoding": "^0.7.0",
-    "text-encoding-polyfill": "^0.6.7"
+    "text-encoding-polyfill": "^0.6.7",
+    "expo-blur": "~13.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"

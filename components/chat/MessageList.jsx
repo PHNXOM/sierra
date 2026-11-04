@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -10,6 +10,7 @@ import { isSameDay } from "date-fns";
 import { formatDate } from "../../utils/date";
 import MessageBubble from "./MessageBubble";
 import { useTheme } from "react-native-paper";
+import { BlurView } from "expo-blur";
 
 function DateSeparator({ date }) {
   return (
@@ -49,29 +50,39 @@ export default function MessageList({
   }
 
   return (
-    <FlatList
-      ref={listRef}
-      data={messages}
-      keyExtractor={(message) => message.id.toString()}
-      renderItem={renderMessage}
-      contentContainerStyle={styles.content}
-      inverted={true}
-      onEndReached={handleEndReached}
-      ListFooterComponent={
-        loadingMore && (
-          <ActivityIndicator
-            size="small"
-            color={theme.colors.onBackground}
-            style={{ marginVertical: 10 }}
-          />
-        )
-      }
-    />
+    <>
+      {loadingMore && (
+        <BlurView
+          style={{
+            position: "absolute",
+            zIndex: 10,
+            top: 0,
+            width: "100%",
+            paddingVertical: 20,
+          }}
+          tint={theme.dark ? "dark" : "light"}
+          intensity={50}
+          experimentalBlurMethod="dimezisBlurView"
+        >
+          <ActivityIndicator size="small" color={theme.colors.onBackground} />
+        </BlurView>
+      )}
+      <FlatList
+        style={{ flex: 1 }}
+        ref={listRef}
+        data={messages}
+        keyExtractor={(message) => message.id.toString()}
+        renderItem={renderMessage}
+        contentContainerStyle={styles.content}
+        inverted={true}
+        onEndReached={handleEndReached}
+      />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { paddingBottom: 10 },
+  content: { position: "relative", paddingBottom: 10 },
   separator: { alignItems: "center", marginVertical: 10 },
   separatorText: {
     backgroundColor: "#fff",
