@@ -2,15 +2,15 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { moveConversationToTop, removeConversation } from "../utils/chat";
 import { AuthContext } from "./AuthContext";
 import { SocketContext } from "./SocketContext";
-import { SoundContext } from "./SoundContext";
 import { markMessagesReadDB } from "../services/messageService";
+import { AppContext } from "./AppContext";
 
 export const ChatContext = createContext(null);
 
 export function ChatProvider({ children }) {
   const { user } = useContext(AuthContext);
   const { on } = useContext(SocketContext);
-  const { playMessageReceivedSound } = useContext(SoundContext);
+  const { playMessageReceivedSound } = useContext(AppContext);
   const [chats, setChats] = useState([]);
   const [typingUsers, setTypingUsers] = useState({});
 

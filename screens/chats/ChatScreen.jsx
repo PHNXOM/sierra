@@ -12,7 +12,6 @@ import EmojiSelector from "react-native-emoji-selector";
 
 import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
-import { SoundContext } from "../../context/SoundContext";
 import { ROUTES } from "../../navigation/routes";
 import {
   deleteConversation,
@@ -30,11 +29,12 @@ import MessageList from "../../components/chat/MessageList";
 import LoadingView from "../../components/ui/LoadingView";
 import { SocketContext } from "../../context/SocketContext";
 import ScreenBackground from "../../components/ui/ScreenBackground";
+import { AppContext } from "../../context/AppContext";
 
 export default function ChatScreen({ route, navigation }) {
   const { otherUser } = route.params;
   const { user } = useContext(AuthContext);
-  const { playMessageSentSound } = useContext(SoundContext);
+  const { playMessageSentSound } = useContext(AppContext);
   const { markMessagesRead, removeChat } = useContext(ChatContext);
 
   const [messages, setMessages] = useState([]);
@@ -228,7 +228,7 @@ export default function ChatScreen({ route, navigation }) {
         senderId: user.id,
         receiverId: otherUser.id,
         attachment: attachment,
-        text: text,
+        text: text.trim(),
       });
 
       // The sent message arrives through the socket ("message-sent")

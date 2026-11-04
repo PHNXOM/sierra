@@ -7,7 +7,6 @@ import MaterialDesignIconsFont from "@react-native-vector-icons/material-design-
 import { useTheme } from "react-native-paper";
 import AppProvider from "./context/AppContext";
 import { AuthProvider } from "./context/AuthContext";
-import { SoundProvider } from "./context/SoundContext";
 
 globalThis.TextEncoder = TextEncoder;
 globalThis.TextDecoder = TextDecoder;
@@ -26,11 +25,9 @@ export default function App() {
   return (
     <AppProvider>
       <AuthProvider>
-        <SoundProvider>
-          <RenderNavigationContainer>
-            <RootNavigator fontsLoaded={fontsLoaded} />
-          </RenderNavigationContainer>
-        </SoundProvider>
+        <RenderNavigationContainer>
+          <RootNavigator fontsLoaded={fontsLoaded} />
+        </RenderNavigationContainer>
       </AuthProvider>
     </AppProvider>
   );

@@ -1,11 +1,9 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import AlertDialog from "../components/ui/AlertDialog";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { STORAGE_KEYS } from "../constants/config";
-// import { useAudioPlayer } from "expo-audio";
-const message_sent = require("../assets/audio/message_sent.mp3");
-const message_received = require("../assets/audio/message_received.mp3");
+import { Audio } from "expo-av";
 
 export const AppContext = createContext();
 
@@ -115,19 +113,44 @@ export default function AppProvider({ children }) {
     content: "",
     buttons: [],
   });
-  // const messageSent = useAudioPlayer(message_sent);
-  // const messageReceived = useAudioPlayer(message_received);
+  const sounds = useRef({ sent: null, received: null });
 
-  // MESSAGE SOUNDS
-  // const playMessageSentSound = () => {
-  //   messageSent.play();
-  // };
+  // ******************** SOUND SETUP ********************
+  useEffect(() => {
+    async function loadSounds() {
+      try {
+        const received = await Audio.Sound.createAsync(
+          require("../assets/audio/message_received.mp3"),
+        );
+        const sent = await Audio.Sound.createAsync(
+          require("../assets/audio/message_sent.mp3"),
+        );
+        sounds.current = { received: received.sound, sent: sent.sound };
+      } catch (error) {
+        console.error("Failed to load sounds", error);
+      }
+    }
 
-  // const playMessageReceivedSound = () => {
-  //   messageReceived.play();
-  // };
+    loadSounds();
 
-  // fetch user settings
+    return () => {
+      sounds.current.received?.unloadAsync();
+      sounds.current.sent?.unloadAsync();
+    };
+  }, []);
+
+  const play = async (name) => {
+    try {
+      await sounds.current[name]?.replayAsync();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const playMessageSentSound = () => play("sent");
+  const playMessageReceivedSound = () => play("received");
+
+  // ******************** FETCH USER SETTINGS ********************
   useEffect(() => {
     const getSettings = async () => {
       try {
@@ -143,11 +166,12 @@ export default function AppProvider({ children }) {
     getSettings();
   }, []);
 
+  // ******************** THEME TOGGLER ********************
+
   const toggleTheme = async () => {
     const new_theme = settings.theme === "light" ? "dark" : "light";
 
     const new_settings = { ...settings, theme: new_theme };
-    console.log(new_settings);
     setSettings(new_settings);
 
     await AsyncStorage.setItem(
@@ -156,6 +180,7 @@ export default function AppProvider({ children }) {
     );
   };
 
+  // ******************** ALERT DIALOG ********************
   const showAlert = (title, content, buttons = []) => {
     setAlert({
       visible: true,
@@ -177,8 +202,8 @@ export default function AppProvider({ children }) {
         showAlert,
         dismissAlert,
         toggleTheme,
-        // playMessageSentSound,
-        // playMessageReceivedSound,
+        playMessageSentSound,
+        playMessageReceivedSound,
       }}
     >
       <PaperProvider theme={currentTheme}>
