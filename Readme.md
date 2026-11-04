@@ -55,7 +55,8 @@ npm start
 ### Backend
 
 - Spring Boot
-- WebSocket (STOMP protocol)
+- WebSocket (STOMP sub-protocol)
+- Redis (for caching)
 - Cloudinary
 - FCM (Firebase Cloud Messaging) for push notifications
 
